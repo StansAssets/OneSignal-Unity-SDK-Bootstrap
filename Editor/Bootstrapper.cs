@@ -27,7 +27,6 @@ namespace OneSignalPush.Bootstrapper
                 }
             }
 
-            // UnityEditor.PackageManager.Client.Add(ScopeRegistriesConfig.OneSignalCoreName);
             // UnityEditor.PackageManager.Client.Add method doesn't work in Unity versions older then 2019.
             // Thus, we need to manually add dependencies.
             // Probably we need to make something similar to OneSignalUpdateRequest to get the latest package version.
@@ -56,7 +55,6 @@ namespace OneSignalPush.Bootstrapper
             }
 
             UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
-
         }
     }
 }
