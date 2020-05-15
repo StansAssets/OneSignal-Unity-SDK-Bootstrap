@@ -1,0 +1,33 @@
+{
+  "name": "com.onesignal.unity.bootstrap",
+  "displayName": "OneSignal - Bootstrap",
+  "version": "1.0.0",
+  "unity": "2018.4",
+  "description": "OneSignal SDK Bootstraper.",
+   "keywords": [
+     "push-notifications",
+     "notification-service",
+     "notifications",
+     "sdk",
+     "pushnotificaitions",
+     "apns",
+     "gcm",
+     "bootstrap"
+   ],
+   "license": "MIT",
+   "author": {
+     "name": "OneSignal",
+     "email": "support@onesignal.com",
+     "url": "https://onesignal.com/"
+   },
+
+   "homepage": "https://onesignal.com/",
+   "bugs": {
+     "url": "https://github.com/OneSignal/OneSignal-Unity-SDK-Bootstrap/issues",
+     "email" : "support@onesignal.com"
+   },
+   "repository": {
+     "type": "git",
+     "url": "git@github.com:OneSignal/OneSignal-Unity-SDK-Bootstrap.git"
+   }
+}
