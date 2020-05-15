@@ -2,14 +2,16 @@
 
 namespace OneSignalPush.Bootstrapper
 {
-    static class ScopeRegistriesConfig
+    static class BootstrapperConfig
     {
+
         public static readonly string OneSignalScope = "com.onesignal";
+        public static readonly string BootstrapperPackageName = "com.onesignal.unity.bootstrap";
 
         public static readonly string OneSignalCoreName = "com.onesignal.unity.core";
         public static readonly string OneSignalCoreVersion = "0.0.1";
 
-        public static readonly string OneSignaliOSName = "com.onesignal.unity.ios";
+        public static readonly string OneSignalIOSName = "com.onesignal.unity.ios";
         public static readonly string OneSignalIosVersion = "0.0.1";
 
         public static readonly string OneSignalAndroidName = "com.onesignal.unity.android";
@@ -31,7 +33,6 @@ namespace OneSignalPush.Bootstrapper
                 NpmjsScopeRegistryUrl,
                 new HashSet<string>
                 {
-                    "com.stansassets",
                     OneSignalScope
                 });
     }

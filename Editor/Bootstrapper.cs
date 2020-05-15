@@ -7,22 +7,22 @@ namespace OneSignalPush.Bootstrapper
     {
         static Bootstrapper()
         {
-            Manifest manifest = new Manifest();
+            var manifest = new Manifest();
             manifest.Fetch();
 
-            bool manifestUpdated = false;
+            var manifestUpdated = false;
 
-            if (!manifest.IsRegistryExists(ScopeRegistriesConfig.NpmjsScopeRegistryUrl))
+            if (!manifest.IsRegistryExists(BootstrapperConfig.NpmjsScopeRegistryUrl))
             {
-                manifest.AddScopeRegistry(ScopeRegistriesConfig.NpmjsScopeRegistry);
+                manifest.AddScopeRegistry(BootstrapperConfig.NpmjsScopeRegistry);
                 manifestUpdated = true;
             }
             else
             {
-                var npmjsScopeRegistry = manifest.GetScopeRegistry(ScopeRegistriesConfig.NpmjsScopeRegistryUrl);
-                if (!npmjsScopeRegistry.HasScope(ScopeRegistriesConfig.OneSignalScope))
+                var npmjsScopeRegistry = manifest.GetScopeRegistry(BootstrapperConfig.NpmjsScopeRegistryUrl);
+                if (!npmjsScopeRegistry.HasScope(BootstrapperConfig.OneSignalScope))
                 {
-                    npmjsScopeRegistry.AddScope(ScopeRegistriesConfig.OneSignalScope);
+                    npmjsScopeRegistry.AddScope(BootstrapperConfig.OneSignalScope);
                     manifestUpdated = true;
                 }
             }
@@ -30,23 +30,23 @@ namespace OneSignalPush.Bootstrapper
             // UnityEditor.PackageManager.Client.Add(ScopeRegistriesConfig.OneSignalCoreName);
             // UnityEditor.PackageManager.Client.Add method doesn't work in Unity versions older then 2019.
             // Thus, we need to manually add dependencies.
-            // Probably we need to use OneSignalUpdateRequest to get the latest package version
+            // Probably we need to make something similar to OneSignalUpdateRequest to get the latest package version.
 
-            if (!manifest.IsDependencyExists(ScopeRegistriesConfig.OneSignalCoreName))
+            if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalCoreName))
             {
-                manifest.AddDependency(ScopeRegistriesConfig.OneSignalCoreName, ScopeRegistriesConfig.OneSignalCoreVersion);
+                manifest.AddDependency(BootstrapperConfig.OneSignalCoreName, BootstrapperConfig.OneSignalCoreVersion);
                 manifestUpdated = true;
             }
 
-            if (!manifest.IsDependencyExists(ScopeRegistriesConfig.OneSignalAndroidName))
+            if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalAndroidName))
             {
-                manifest.AddDependency(ScopeRegistriesConfig.OneSignalAndroidName, ScopeRegistriesConfig.OneSignalAndroidVersion);
+                manifest.AddDependency(BootstrapperConfig.OneSignalAndroidName, BootstrapperConfig.OneSignalAndroidVersion);
                 manifestUpdated = true;
             }
 
-            if (!manifest.IsDependencyExists(ScopeRegistriesConfig.OneSignaliOSName))
+            if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalIOSName))
             {
-                manifest.AddDependency(ScopeRegistriesConfig.OneSignaliOSName, ScopeRegistriesConfig.OneSignalIosVersion);
+                manifest.AddDependency(BootstrapperConfig.OneSignalIOSName, BootstrapperConfig.OneSignalIosVersion);
                 manifestUpdated = true;
             }
 
@@ -54,6 +54,9 @@ namespace OneSignalPush.Bootstrapper
             {
                 manifest.ApplyChanges();
             }
+
+            UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
+
         }
     }
 }

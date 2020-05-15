@@ -77,7 +77,7 @@ namespace OneSignalPush.MiniJSON
     /// JSON uses Arrays and Objects. These correspond here to the datatypes IList and IDictionary.
     /// All numbers are parsed to doubles.
     /// </summary>
-    public static class Json {
+    static class Json {
         /// <summary>
         /// Parses the string json into a value
         /// </summary>
