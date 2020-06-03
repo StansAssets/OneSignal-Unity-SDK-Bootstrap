@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace OneSignalPush.Bootstrapper
+namespace Com.OneSignal.Bootstrapper
 {
     static class BootstrapperConfig
     {
-
-        public static readonly string OneSignalScope = "com.onesignal";
+        public static readonly string OneSignalScope = "com.onesignal.unity";
         public static readonly string BootstrapperPackageName = "com.onesignal.unity.bootstrap";
 
         public static readonly string OneSignalCoreName = "com.onesignal.unity.core";

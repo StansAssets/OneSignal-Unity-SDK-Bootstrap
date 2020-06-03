@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using OneSignalPush.MiniJSON;
 
-namespace OneSignalPush.Bootstrapper
+namespace Com.OneSignal.Bootstrapper
 {
     /// <summary>
     /// Representation of Manifest JSON file.

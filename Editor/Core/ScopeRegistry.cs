@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace OneSignalPush.Bootstrapper
+namespace Com.OneSignal.Bootstrapper
 {
     /// <summary>
     /// Representation of "scopeRegistries" entry of the manifest file.

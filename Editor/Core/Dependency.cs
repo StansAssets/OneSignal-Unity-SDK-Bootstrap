@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OneSignalPush.Bootstrapper
+namespace Com.OneSignal.Bootstrapper
 {
     /// <summary>
     /// Representation of the manifest file "dependency" entry.

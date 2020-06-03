@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace OneSignalPush.Bootstrapper
+namespace Com.OneSignal.Bootstrapper
 {
     [InitializeOnLoad]
     static class Bootstrapper
