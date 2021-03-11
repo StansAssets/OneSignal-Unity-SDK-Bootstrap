@@ -31,12 +31,6 @@ namespace Com.OneSignal.Bootstrapper
             // Thus, we need to manually add dependencies.
             // Probably we need to make something similar to OneSignalUpdateRequest to get the latest package version.
 
-            if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalCoreName))
-            {
-                manifest.AddDependency(BootstrapperConfig.OneSignalCoreName, BootstrapperConfig.OneSignalCoreVersion);
-                manifestUpdated = true;
-            }
-
             if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalAndroidName))
             {
                 manifest.AddDependency(BootstrapperConfig.OneSignalAndroidName, BootstrapperConfig.OneSignalAndroidVersion);
