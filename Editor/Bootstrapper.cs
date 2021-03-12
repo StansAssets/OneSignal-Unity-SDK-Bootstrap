@@ -1,11 +1,33 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace Com.OneSignal.Bootstrapper
 {
     [InitializeOnLoad]
     static class Bootstrapper
     {
-        static Bootstrapper()
+        static Bootstrapper ()
+        {
+            if (!AssetDatabase.FindAssets ("lock", new[] { BootstrapperConfig.BootstrapperFolderPath }).Any ()) {
+                AssetDatabase.Refresh();
+                InstallLatestOneSignalRelease (true);
+            }
+            else {
+                Debug.Log ("'lock' file found. Bootstrap execution has not started.");
+            }
+        }
+
+        internal static void InstallLatestOneSignalRelease (bool cleanUp)
+        {
+            GitHubUtility.GetLatestRelease (BootstrapperConfig.GitHubRepositoryURL, Bootstrap);
+            if (cleanUp) {
+                UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
+                CleanUpUtility.RemoveBootstrapperAssets ();
+            }
+        }
+        
+        static void Bootstrap(GitHubRelease latestRelease)
         {
             var manifest = new Manifest();
             manifest.Fetch();
@@ -33,13 +55,13 @@ namespace Com.OneSignal.Bootstrapper
 
             if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalAndroidName))
             {
-                manifest.AddDependency(BootstrapperConfig.OneSignalAndroidName, BootstrapperConfig.OneSignalAndroidVersion);
+                manifest.AddDependency(BootstrapperConfig.OneSignalAndroidName, latestRelease.Name);
                 manifestUpdated = true;
             }
 
             if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalIOSName))
             {
-                manifest.AddDependency(BootstrapperConfig.OneSignalIOSName, BootstrapperConfig.OneSignalIosVersion);
+                manifest.AddDependency(BootstrapperConfig.OneSignalIOSName, latestRelease.Name);
                 manifestUpdated = true;
             }
 
@@ -47,8 +69,6 @@ namespace Com.OneSignal.Bootstrapper
             {
                 manifest.ApplyChanges();
             }
-
-            UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
         }
     }
 }
