@@ -15,7 +15,7 @@ namespace Com.OneSignal.Bootstrapper
         public static readonly string NpmjsScopeRegistryUrl = "https://registry.npmjs.org/";
 
         public const string GitHubRepositoryURL = @"ssh://git@github.com:StansAssets/OneSignal-Unity-SDK.git";
-        public const string BootstrapperFolderPath = @"Assets/OneSignalBootstrap";
+        public const string BootstrapperFolderPath = @"Assets/OneSignalBootstrap/Editor";
 
         public static ScopeRegistry GoogleScopeRegistry =>
             new ScopeRegistry("Game Package Registry by Google",

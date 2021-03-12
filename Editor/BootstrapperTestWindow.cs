@@ -18,8 +18,8 @@ namespace Com.OneSignal.Bootstrapper
         {
             rootVisualElement.Clear ();
             rootVisualElement.Add (new Button (CleanUpUtility.RemoveBootstrapperAssets) {text = "Clean Up"});
-            rootVisualElement.Add (new Button (() => Bootstrapper.InstallLatestOneSignalRelease (false)) {text = "Install OneSignal Packages (no cleanup)"});
-            rootVisualElement.Add (new Button (() => Bootstrapper.InstallLatestOneSignalRelease (true)) {text = "Install OneSignal Packages (complete)"});
+            rootVisualElement.Add (new Button (() => Bootstrapper.InstallLatestOneSignalRelease ()) {text = "Install OneSignal Packages (no cleanup)"});
+            rootVisualElement.Add (new Button (() => Bootstrapper.InstallLatestOneSignalRelease ()) {text = "Install OneSignal Packages (complete)"});
             
             rootVisualElement.Add (s_LatestVersionLabel ?? (s_LatestVersionLabel = new Label ("latest package version is unknown")));
             rootVisualElement.Add (new Button (() => GitHubUtility.GetLatestRelease (BootstrapperConfig.GitHubRepositoryURL,

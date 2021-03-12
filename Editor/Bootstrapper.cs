@@ -7,26 +7,50 @@ namespace Com.OneSignal.Bootstrapper
     [InitializeOnLoad]
     static class Bootstrapper
     {
-        static Bootstrapper ()
+        static Bootstrapper()
         {
-            if (!AssetDatabase.FindAssets ("lock", new[] { BootstrapperConfig.BootstrapperFolderPath }).Any ()) {
-                AssetDatabase.Refresh();
-                InstallLatestOneSignalRelease (true);
+            if (!AssetDatabase.FindAssets("lock", new[] {BootstrapperConfig.BootstrapperFolderPath}).Any())
+            {
+                InstallLatestOneSignalRelease();
             }
-            else {
-                Debug.Log ("'lock' file found. Bootstrap execution has not started.");
+            else
+            {
+                Debug.Log("'lock' file found. Bootstrap execution has not started.");
             }
         }
 
-        internal static void InstallLatestOneSignalRelease (bool cleanUp)
+        static bool IsOneSignalCoreInstalled
         {
-            GitHubUtility.GetLatestRelease (BootstrapperConfig.GitHubRepositoryURL, Bootstrap);
-            if (cleanUp) {
-                UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
-                CleanUpUtility.RemoveBootstrapperAssets ();
+            get
+            {
+#if ONE_SIGNAL_INSTALLED
+                return true;
+#else
+                return false;
+#endif
             }
         }
-        
+
+        internal static void InstallLatestOneSignalRelease()
+        {
+            if (IsOneSignalCoreInstalled)
+            {
+                EditorApplication.delayCall += () =>
+                {
+                    EditorUtility.DisplayDialog("Successes",
+                        "OneSignal installation completed. Thank you!", "Ok");
+                    UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
+                    CleanUpUtility.RemoveBootstrapperAssets();
+                };
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("OneSignal",
+                    "Installation started. Thank you!", "Ok");
+                GitHubUtility.GetLatestRelease(BootstrapperConfig.GitHubRepositoryURL, Bootstrap);
+            }
+        }
+
         static void Bootstrap(GitHubRelease latestRelease)
         {
             var manifest = new Manifest();
@@ -68,6 +92,7 @@ namespace Com.OneSignal.Bootstrapper
             if (manifestUpdated)
             {
                 manifest.ApplyChanges();
+                AssetDatabase.Refresh();
             }
         }
     }
