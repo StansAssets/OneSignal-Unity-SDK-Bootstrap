@@ -1,7 +1,7 @@
 {
   "name": "com.onesignal.unity.bootstrap",
   "displayName": "OneSignal - Bootstrap",
-  "version": "0.0.2",
+  "version": "0.0.1-preview",
   "unity": "2018.4",
   "description": "OneSignal SDK Bootstrapper.",
    "keywords": [
