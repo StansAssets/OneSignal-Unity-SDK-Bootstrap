@@ -4,7 +4,7 @@ namespace Com.OneSignal.Bootstrapper
 {
     static class BootstrapperConfig
     {
-        public static readonly string OneSignalScope = "com.onesignal-test";
+        public static readonly string OneSignalScope = "com.onesignal";
         public static readonly string BootstrapperPackageName = $"{OneSignalScope}.unity.bootstrap";
 
         public static readonly string OneSignalCoreName = $"{OneSignalScope}.unity.core";
