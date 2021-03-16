@@ -16,6 +16,11 @@ namespace Com.OneSignal.Bootstrapper
 
         public const string GitHubRepositoryURL = @"ssh://git@github.com:StansAssets/OneSignal-Unity-SDK.git";
         public const string BootstrapperFolderPath = @"Assets/OneSignalBootstrap/Editor";
+        
+        public static readonly string[] OutdatedSDKDirectories = {
+                                                                     @"Assets/OneSignal",
+                                                                     @"Assets/Plugins/Android/OneSignalConfig.plugin",
+                                                                 };
 
         public static ScopeRegistry GoogleScopeRegistry =>
             new ScopeRegistry("Game Package Registry by Google",

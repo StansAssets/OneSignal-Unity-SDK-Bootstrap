@@ -31,24 +31,48 @@ namespace Com.OneSignal.Bootstrapper
             }
         }
 
-        internal static void InstallLatestOneSignalRelease()
+        internal static void InstallLatestOneSignalRelease ()
         {
-            if (IsOneSignalCoreInstalled)
-            {
-                EditorApplication.delayCall += () =>
-                {
-                    EditorUtility.DisplayDialog("Successes",
-                        "OneSignal installation completed. Thank you!", "Ok");
-                    UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
-                    CleanUpUtility.RemoveBootstrapperAssets();
+            if (IsOneSignalCoreInstalled) {
+                EditorApplication.delayCall += () => {
+                    EditorUtility.DisplayDialog ("Successes",
+                                                 "OneSignal installation completed. Thank you!",
+                                                 "Ok");
+                    UninstallBootstrapper ();
                 };
             }
-            else
-            {
-                EditorUtility.DisplayDialog("OneSignal",
-                    "Installation started. Thank you!", "Ok");
-                GitHubUtility.GetLatestRelease(BootstrapperConfig.GitHubRepositoryURL, Bootstrap);
+            else if (FindRemainingDirectoriesOfOutdatedSDK (out var directories)) {
+                if (EditorUtility.DisplayDialog ("OneSignal",
+                                                 "The project contains an outdated version of OneSignal SDK! It has to be removed in order to continue the installation.",
+                                                 "Remove and continue",
+                                                 "Cancel installation")) {
+                    CleanUpUtility.RemoveDirectories (directories);
+                }
+                else {
+                    UninstallBootstrapper ();
+                    return;
+                }
             }
+            else {
+                EditorUtility.DisplayDialog ("OneSignal",
+                                             "Installation started. Thank you!",
+                                             "Ok");    
+            }
+            GitHubUtility.GetLatestRelease (BootstrapperConfig.GitHubRepositoryURL, Bootstrap);
+        }
+
+        static void UninstallBootstrapper ()
+        {
+            UnityEditor.PackageManager.Client.Remove(BootstrapperConfig.BootstrapperPackageName);
+            CleanUpUtility.RemoveDirectories(BootstrapperConfig.BootstrapperFolderPath);
+        }
+
+        static bool FindRemainingDirectoriesOfOutdatedSDK (out string[] directories)
+        {
+            directories = BootstrapperConfig.OutdatedSDKDirectories
+                                            .Where (AssetDatabase.IsValidFolder)
+                                            .ToArray ();
+            return directories.Any ();
         }
 
         static void Bootstrap(GitHubRelease latestRelease)
