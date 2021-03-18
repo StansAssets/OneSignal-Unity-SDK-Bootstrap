@@ -1,5 +1,10 @@
 using System.Linq;
 using UnityEditor;
+#if UNITY_2020
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+#endif
 
 namespace Com.OneSignal.Bootstrapper
 {
@@ -11,11 +16,9 @@ namespace Com.OneSignal.Bootstrapper
             if (validDirectories.Any()) {
 #if UNITY_2020
                 var failedPathsList = new List<string>();
-                if (!AssetDatabase.DeleteAssets (validFolders, failedPathsList)){
-                    failedPathsList.ForEach(Debug.Log);
-                }
-                else {
-                    Debug.Log ($"Directory {RemovalPath} not found!");
+                if (!AssetDatabase.DeleteAssets(validDirectories, failedPathsList)) {
+                    var pathsCombined = string.Join(Environment.NewLine, failedPathsList);
+                    Debug.LogError($"Failed to remove following assets:{Environment.NewLine}{pathsCombined}");
                 }
 #else
                 foreach (var path in validDirectories) {

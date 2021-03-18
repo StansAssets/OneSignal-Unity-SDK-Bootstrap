@@ -9,12 +9,11 @@ namespace Com.OneSignal.Bootstrapper
     {
         static Bootstrapper()
         {
-            if (!AssetDatabase.FindAssets("lock", new[] { BootstrapperConfig.BootstrapperFolderPath }).Any()) {
-                //InstallLatestOneSignalRelease();
-            }
-            else {
+            if (!AssetDatabase.FindAssets("onesignal-bootstrap-lock", new[] { "Assets" }).Any()) 
+                InstallLatestOneSignalRelease();
+            else 
                 Debug.Log("'lock' file found. Bootstrap execution has not started.");
-            }
+            
         }
 
         static bool IsOneSignalCoreInstalled {
@@ -22,7 +21,7 @@ namespace Com.OneSignal.Bootstrapper
 #if ONE_SIGNAL_INSTALLED
                 return true;
 #else
-                return true;
+                return false;
 #endif
             }
         }
@@ -36,8 +35,10 @@ namespace Com.OneSignal.Bootstrapper
                                                 "Ok");
                     UninstallBootstrapper();
                 };
+                return;
             }
-            else if (FindRemainingDirectoriesOfOutdatedSDK(out var directories)) {
+            
+            if (FindRemainingDirectoriesOfOutdatedSDK(out var directories)) {
                 if (EditorUtility.DisplayDialog("OneSignal",
                                                 "The project contains an outdated version of OneSignal SDK! It has to be removed in order to continue the installation.",
                                                 "Remove and continue",
@@ -45,7 +46,7 @@ namespace Com.OneSignal.Bootstrapper
                     CleanUpUtility.RemoveDirectories(directories);
                 }
                 else {
-                    UninstallBootstrapper();
+                    EditorApplication.delayCall += UninstallBootstrapper;
                     return;
                 }
             }
@@ -72,14 +73,14 @@ namespace Com.OneSignal.Bootstrapper
             return directories.Any();
         }
 
-        static void Bootstrap(GitHubRelease latestRelease)
+        static void Bootstrap(string latestRelease)
         {
             var manifest = new Manifest();
             manifest.Fetch();
 
             var manifestUpdated = false;
 
-            if (!manifest.IsRegistryExists(BootstrapperConfig.NpmjsScopeRegistryUrl)) {
+            if (!manifest.IsRegistryPresent(BootstrapperConfig.NpmjsScopeRegistryUrl)) {
                 manifest.AddScopeRegistry(BootstrapperConfig.NpmjsScopeRegistry);
                 manifestUpdated = true;
             }
@@ -95,13 +96,13 @@ namespace Com.OneSignal.Bootstrapper
             // Thus, we need to manually add dependencies.
             // Probably we need to make something similar to OneSignalUpdateRequest to get the latest package version.
 
-            if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalAndroidName)) {
-                manifest.AddDependency(BootstrapperConfig.OneSignalAndroidName, latestRelease.Name);
+            if (!manifest.IsDependencyPresent(BootstrapperConfig.OneSignalAndroidName)) {
+                manifest.AddDependency(BootstrapperConfig.OneSignalAndroidName, latestRelease);
                 manifestUpdated = true;
             }
 
-            if (!manifest.IsDependencyExists(BootstrapperConfig.OneSignalIOSName)) {
-                manifest.AddDependency(BootstrapperConfig.OneSignalIOSName, latestRelease.Name);
+            if (!manifest.IsDependencyPresent(BootstrapperConfig.OneSignalIOSName)) {
+                manifest.AddDependency(BootstrapperConfig.OneSignalIOSName, latestRelease);
                 manifestUpdated = true;
             }
 

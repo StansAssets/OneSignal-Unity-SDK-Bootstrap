@@ -43,7 +43,7 @@ namespace Com.OneSignal.Bootstrapper
         /// <returns>Dependency object representation as Dictionary&lt;string, object&gt;.</returns>
         public Dictionary<string, object> ToDictionary()
         {
-            Dictionary<string,object> result = new Dictionary<string, object>();
+            Dictionary<string, object> result = new Dictionary<string, object>();
             result.Add(Name, Version);
             return result;
         }

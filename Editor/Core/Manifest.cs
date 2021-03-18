@@ -32,7 +32,7 @@ namespace Com.OneSignal.Bootstrapper
         {
             Path = pathToFile;
             m_ScopeRegistries = new Dictionary<string, ScopeRegistry>();
-            m_Dependencies = new Dictionary<string,Dependency>();
+            m_Dependencies = new Dictionary<string, Dependency>();
         }
 
         /// <summary>
@@ -41,27 +41,21 @@ namespace Com.OneSignal.Bootstrapper
         public void Fetch()
         {
             var manifestText = File.ReadAllText(Path);
-            m_RawContent = (Dictionary<string, object>)Json.Deserialize(manifestText);
+            m_RawContent = (Dictionary<string, object>) Json.Deserialize(manifestText);
 
-            if (m_RawContent.TryGetValue(k_ScopedRegistriesKey, out var registriesBlob))
-            {
-                if (registriesBlob is List<object> registries)
-                {
-                    foreach (var registry in registries)
-                    {
-                        var registryDict = (Dictionary<string, object>)registry;
+            if (m_RawContent.TryGetValue(k_ScopedRegistriesKey, out var registriesBlob)) {
+                if (registriesBlob is List<object> registries) {
+                    foreach (var registry in registries) {
+                        var registryDict = (Dictionary<string, object>) registry;
                         var scopeRegistry = new ScopeRegistry(registryDict);
                         m_ScopeRegistries.Add(scopeRegistry.Url, scopeRegistry);
                     }
                 }
             }
 
-            if (m_RawContent.TryGetValue(k_DependenciesKey, out var dependenciesBlob))
-            {
-                if (dependenciesBlob is Dictionary<string, object> dependencies)
-                {
-                    foreach (var dependencyData in dependencies)
-                    {
+            if (m_RawContent.TryGetValue(k_DependenciesKey, out var dependenciesBlob)) {
+                if (dependenciesBlob is Dictionary<string, object> dependencies) {
+                    foreach (var dependencyData in dependencies) {
                         var dependency = new Dependency(dependencyData.Key, dependencyData.Value.ToString());
                         m_Dependencies.Add(dependency.Name, dependency);
                     }
@@ -95,8 +89,7 @@ namespace Com.OneSignal.Bootstrapper
         /// <param name="registry">An entry to add.</param>
         public void AddScopeRegistry(ScopeRegistry registry)
         {
-            if (!IsRegistryExists(registry.Url))
-            {
+            if (!IsRegistryPresent(registry.Url)) {
                 m_ScopeRegistries.Add(registry.Url, registry);
             }
         }
@@ -108,8 +101,7 @@ namespace Com.OneSignal.Bootstrapper
         /// <param name="version">Dependency version.</param>
         public void AddDependency(string name, string version)
         {
-            if (!IsDependencyExists(name))
-            {
+            if (!IsDependencyPresent(name)) {
                 var dependency = new Dependency(name, version);
                 m_Dependencies.Add(dependency.Name, dependency);
             }
@@ -121,10 +113,10 @@ namespace Com.OneSignal.Bootstrapper
         public void ApplyChanges()
         {
             var registries = new List<object>();
-            foreach (var registry in m_ScopeRegistries.Values)
-            {
+            foreach (var registry in m_ScopeRegistries.Values) {
                 registries.Add(registry.ToDictionary());
             }
+
             m_RawContent[k_ScopedRegistriesKey] = registries;
 
             // Remove 'scopedRegistries' key from raw content if we have zero scope registries.
@@ -132,15 +124,15 @@ namespace Com.OneSignal.Bootstrapper
             if (registries.Count == 0)
                 m_RawContent.Remove(k_ScopedRegistriesKey);
 
-            Dictionary<string,object> dependencies = new Dictionary<string, object>();
-            foreach (var dependency in m_Dependencies.Values)
-            {
+            Dictionary<string, object> dependencies = new Dictionary<string, object>();
+            foreach (var dependency in m_Dependencies.Values) {
                 dependencies.Add(dependency.Name, dependency.Version);
             }
+
             m_RawContent[k_DependenciesKey] = dependencies;
 
             string manifestText = Json.Serialize(m_RawContent, true);
-            File.WriteAllText(Path,manifestText);
+            File.WriteAllText(Path, manifestText);
         }
 
         /// <summary>
@@ -148,7 +140,7 @@ namespace Com.OneSignal.Bootstrapper
         /// </summary>
         /// <param name="url">ScopeRegistry url to search for.</param>
         /// <returns>`true` if scoped registry found, `false` otherwise.</returns>
-        public bool IsRegistryExists(string url)
+        public bool IsRegistryPresent(string url)
         {
             return m_ScopeRegistries.ContainsKey(url);
         }
@@ -158,7 +150,7 @@ namespace Com.OneSignal.Bootstrapper
         /// </summary>
         /// <param name="name">The dependency name to search for.</param>
         /// <returns>`true` if found, `false` otherwise.</returns>
-        public bool IsDependencyExists(string name)
+        public bool IsDependencyPresent(string name)
         {
             return m_Dependencies.ContainsKey(name);
         }

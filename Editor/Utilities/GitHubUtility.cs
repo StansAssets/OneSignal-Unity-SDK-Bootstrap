@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using OneSignalPush.MiniJSON;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -6,15 +8,17 @@ namespace Com.OneSignal.Bootstrapper
 {
     static class GitHubUtility
     {
-        internal static void GetLatestRelease(string url, Action<GitHubRelease> callback)
+        internal static void GetLatestRelease(string url, Action<string> callback)
         {
-            var rq = UnityWebRequest.Get(GetReleaseInfoURL(url));
+            var rq = UnityWebRequest.Get(GetReleaseInfoFromURL(url));
             rq.SendWebRequest().completed += obj => {
-                callback(new GitHubRelease(rq.downloadHandler.text));
+                var jsonObject = (Dictionary<string, object>) Json.Deserialize(rq.downloadHandler.text);
+                string releaseName = jsonObject.TryGetValue("name", out var name) ? (string) name : string.Empty;
+                callback(releaseName);
             };
         }
 
-        static string GetReleaseInfoURL(string repositoryURL)
+        static string GetReleaseInfoFromURL(string repositoryURL)
         {
             if (repositoryURL.Contains("github.com")) {
                 return repositoryURL.Replace(@".git", @"/releases/latest")
