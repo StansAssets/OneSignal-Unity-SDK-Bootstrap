@@ -51,8 +51,7 @@ namespace Com.OneSignal.Bootstrapper
             Url = (string) dictionary[k_KeyUrl];
             var scopes = (List<object>) dictionary[k_KeyScopes];
             Scopes = new HashSet<string>();
-            foreach (var scope in scopes)
-            {
+            foreach (var scope in scopes) {
                 Scopes.Add((string) scope);
             }
         }
@@ -81,14 +80,17 @@ namespace Com.OneSignal.Bootstrapper
         /// Generates a hash of this object data, excluding Name.
         /// </summary>
         /// <returns>Hash of this object.</returns>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             int hash = 0;
-            if (!string.IsNullOrEmpty(Url)) hash ^= Url.GetHashCode();
-             if (Scopes != null) {
+            if (!string.IsNullOrEmpty(Url))
+                hash ^= Url.GetHashCode();
+            if (Scopes != null) {
                 foreach (var scope in Scopes) {
                     hash ^= scope.GetHashCode();
                 }
             }
+
             return hash;
         }
 
@@ -101,7 +103,8 @@ namespace Com.OneSignal.Bootstrapper
         {
             return obj is ScopeRegistry other &&
                    Url == other.Url &&
-                   Scopes != null && other.Scopes != null &&
+                   Scopes != null &&
+                   other.Scopes != null &&
                    new HashSet<string>(Scopes).SetEquals(other.Scopes);
         }
 
@@ -111,10 +114,10 @@ namespace Com.OneSignal.Bootstrapper
         /// <returns>ScopeRegistry object representation as Dictionary&lt;string, object&gt;.</returns>
         public Dictionary<string, object> ToDictionary()
         {
-            Dictionary<string,object> result = new Dictionary<string, object>();
-            result.Add(k_KeyName,Name);
-            result.Add(k_KeyUrl,Url);
-            result.Add(k_KeyScopes,Scopes.ToList());
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            result.Add(k_KeyName, Name);
+            result.Add(k_KeyUrl, Url);
+            result.Add(k_KeyScopes, Scopes.ToList());
             return result;
         }
     }
