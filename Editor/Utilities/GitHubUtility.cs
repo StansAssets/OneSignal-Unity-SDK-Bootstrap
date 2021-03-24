@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using OneSignalPush.MiniJSON;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Com.OneSignal.Bootstrapper
