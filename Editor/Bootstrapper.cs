@@ -9,11 +9,11 @@ namespace Com.OneSignal.Bootstrapper
     {
         static Bootstrapper()
         {
-            if (!AssetDatabase.FindAssets("onesignal-bootstrap-lock", new[] { "Assets" }).Any()) 
+            if (!AssetDatabase.FindAssets("onesignal-bootstrap-lock", new[] { "Assets" }).Any())
                 InstallLatestOneSignalRelease();
-            else 
-                Debug.Log("'lock' file found. Bootstrap execution has not started.");
-            
+            else
+                Debug.LogWarning("'lock' file found. Bootstrap execution locked.");
+
         }
 
         static bool IsOneSignalCoreInstalled {
@@ -37,7 +37,7 @@ namespace Com.OneSignal.Bootstrapper
                 };
                 return;
             }
-            
+
             if (FindRemainingDirectoriesOfOutdatedSDK(out var directories)) {
                 if (EditorUtility.DisplayDialog("OneSignal",
                                                 "The project contains an outdated version of OneSignal SDK! It has to be removed in order to continue the installation.",
