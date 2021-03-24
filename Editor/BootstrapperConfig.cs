@@ -4,7 +4,7 @@ namespace Com.OneSignal.Bootstrapper
 {
     static class BootstrapperConfig
     {
-        public static readonly string OneSignalScope = "com.onesignal-test.unity";
+        public static readonly string OneSignalScope = "com.onesignal.unity";
         public static readonly string BootstrapperPackageName = $"{OneSignalScope}.bootstrap";
 
         public static readonly string OneSignalCoreName = $"{OneSignalScope}.core";
@@ -14,13 +14,13 @@ namespace Com.OneSignal.Bootstrapper
         public static readonly string GoogleScopeRegistryUrl = "https://unityregistry-pa.googleapis.com";
         public static readonly string NpmjsScopeRegistryUrl = "https://registry.npmjs.org/";
 
-        public const string GitHubRepositoryURL = @"ssh://git@github.com:StansAssets/OneSignal-Unity-SDK.git";
+        public const string GitHubRepositoryURL = @"ssh://git@github.com:OneSignal/OneSignal-Unity-SDK.git";
         public const string BootstrapperFolderPath = @"Assets/OneSignalBootstrap";
 
         public static readonly string[] OutdatedSDKDirectories = {
-                                                                     @"Assets/OneSignal",
-                                                                     @"Assets/Plugins/Android/OneSignalConfig.plugin",
-                                                                 };
+            @"Assets/OneSignal",
+            @"Assets/Plugins/Android/OneSignalConfig.plugin",
+        };
 
         public static ScopeRegistry GoogleScopeRegistry =>
             new ScopeRegistry("Game Package Registry by Google",

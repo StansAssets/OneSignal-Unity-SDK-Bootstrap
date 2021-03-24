@@ -12,7 +12,7 @@
     "defineConstraints": [],
     "versionDefines": [
         {
-            "name": "com.onesignal-test.unity.core",
+            "name": "com.onesignal.unity.core",
             "expression": "0.0.1",
             "define": "ONE_SIGNAL_INSTALLED"
         }
